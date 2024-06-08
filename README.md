@@ -7,6 +7,10 @@ Skip trace real estate leads using Batch Data API
 npm install
 npm run dev
 
+## Environment Variables
+
+BATCH_SERVER_TOKEN = "SERVER TOKEN FROM BATCH DATA"
+
 ## Packages
 
 multer

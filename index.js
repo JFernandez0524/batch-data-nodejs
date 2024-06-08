@@ -42,7 +42,7 @@ app.post('/upload', upload.single('csvfile'), (req, res) => {
           formattedData // Use the stringified data directly
         );
 
-        // Send a success response
+        // Send a success response with the results of parsing the csv file
         res.json({
           success: 'File uploaded and processed',
           results: formattedData,
