@@ -25,8 +25,12 @@ csv-parse
 Upload CSV file with following column headers
 
           ADMIN_FIRST_NAME,
-          ADMIN_LAST_NAME,
+          ADMIN_LAST_NAME,          
           ADMIN_MAILING_ADDRESS,
           ADMIN_MAILING_CITY,
           ADMIN_MAILING_STATE,
           ADMIN_MAILING_ZIP,
+
+## Environment Variables
+
+BATCH_SERVER_TOKEN = "SERVER TOKEN FROM BATCH DATA"
