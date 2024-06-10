@@ -18,6 +18,15 @@ const app = express();
 app.use(express.static('public'));
 app.use(cors());
 
+app.get('/test', (req, res) => {
+  res.send({
+    status: 200,
+    data: {
+      leadCount: 100,
+    },
+  });
+});
+
 app.post('/upload', upload.single('csvfile'), (req, res) => {
   const results = [];
   fs.createReadStream(req.file.path)
@@ -44,8 +53,10 @@ app.post('/upload', upload.single('csvfile'), (req, res) => {
 
         // Send a success response with the results of parsing the csv file
         res.json({
+          status: 200,
           success: 'File uploaded and processed',
           results: formattedData,
+          totalRecords: JSON.parse(formattedData).length,
         });
       } catch (error) {
         console.error('Error handling file processing: ' + error);
@@ -56,7 +67,7 @@ app.post('/upload', upload.single('csvfile'), (req, res) => {
 
 app.get('/skip-data', async (req, res) => {
   try {
-    // Await the promise returned by uploadData
+    // Await the leads skipped traced returned by skipData
     const skippedData = await skipData();
 
     // Convert apiResponse to a JSON string to save to file
