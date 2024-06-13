@@ -30,17 +30,19 @@ skipTraceBtn.addEventListener('click', async () => {
   try {
     const data = await fetchData(url);
     if (data) {
-      console.log(JSON.stringify(data));
+      return data;
     } else {
       throw new Error('fetchData failed');
     }
   } catch (error) {
-    console.log(`Error no data fetched: ${error} with ${error.message}`);
+    console.log(`Error no data fetched: with ${error.message}`);
   }
 });
 
-generateCsvBtn.addEventListener('click', () => {
-  console.log('generate csv click');
+generateCsvBtn.addEventListener('click', async () => {
+  const url = '/generate-csv';
+  const response = await fetch(url);
+  return response.json();
 });
 
 async function fetchData(url) {
