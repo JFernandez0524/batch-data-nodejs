@@ -4,16 +4,22 @@ Skip trace real estate leads using Batch Data API
 
 ## Run App
 
-npm install\_\_
+npm install<br>
 npm run dev
+
+## Folders
+
+Create these folders in root directory<br>
+/uploads<br>
+/results<br>
 
 ## Environment Variables
 
-BATCH_SERVER_TOKEN = "SERVER TOKEN FROM BATCH DATA"\_\_
+BATCH_SERVER_TOKEN = "SERVER TOKEN FROM BATCH DATA"<br>
 
 ## Packages
 
-multer\_\_
+multer<br>
 csv-parse
 
 ## Routes

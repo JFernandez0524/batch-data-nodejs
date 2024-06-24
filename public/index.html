@@ -13,9 +13,9 @@
     <h1 class="text-center">CSV Import App</h1>
     <main class="row justify-content-center">
       <div class="col-4">
-        <form enctype="multipart/form-data" onsubmit="">
+        <form enctype="multipart/form-data" method="POST">
           <input class="form-control" type="file" id="csvfile" name="csvfile" required>
-          <button class="btn btn-primary mt-3">Upload CSV</button>
+          <button type="submit" class="btn btn-primary mt-3">Upload CSV</button>
         </form>
       </div>
       <section class="total-leads text-center my-4">

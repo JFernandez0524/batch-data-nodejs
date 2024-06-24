@@ -2,35 +2,60 @@ const skipTraceBtn = document.querySelector('.skiptrace');
 const generateCsvBtn = document.querySelector('.generate-csv');
 const formSubmit = document.querySelector('form');
 
+async function postData(url, data) {
+  if (!data) {
+    throw new Error(`No Data: ${data} Provided.`);
+  }
+  try {
+    const response = await fetch(url, {
+      method: 'post',
+      body: data,
+    });
+    if (!response.ok) {
+      throw new Error(`POST to ${url} Failed.`);
+    }
+    return response.json();
+  } catch (error) {
+    console.log(error, error.message);
+  }
+}
+
+async function fetchData(url) {
+  try {
+    const response = await fetch(url);
+    if (!response.ok) {
+      throw new Error(`FETCH to URL: ${url} Failed`);
+    }
+    return response.json();
+  } catch (error) {
+    console.log(`FetchData function failed: ${error.message}`);
+  }
+}
+
 formSubmit.addEventListener('submit', async (event) => {
   event.preventDefault();
   //elements
-  const csvFileInput = document.querySelector('#csvfile');
+  // const csvFileInput = document.querySelector('#csvfile');
   const leadsCount = document.querySelector('.leads-count');
 
   const url = '/upload';
   const formData = new FormData(formSubmit);
-  csvFileInput.value = '';
+  // formData.append('csvfile', csvFileInput.files[0]);
 
-  // const file = formData.get('csvfile');
-  try {
-    const fileUploadResults = await postData(url, formData);
-
-    if (fileUploadResults.status === 200) {
-      console.log(JSON.stringify(fileUploadResults));
-      leadsCount.innerHTML = Number(fileUploadResults.totalRecords);
-    }
-  } catch (error) {
-    console.log(error.message);
-  }
+  const response = await postData(url, formData);
+  leadsCount.innerHTML = Number(response.totalRecords);
+  console.log(response);
 });
 
-skipTraceBtn.addEventListener('click', async () => {
+skipTraceBtn.addEventListener('click', async (event) => {
+  event.preventDefault();
+  const skipTotal = document.querySelector('.skip-total');
   const url = '/skip-data';
   try {
     const data = await fetchData(url);
     if (data) {
-      return data;
+      skipTotal.innerHTML = data.totalRecords;
+      console.log(data);
     } else {
       throw new Error('fetchData failed');
     }
@@ -44,23 +69,3 @@ generateCsvBtn.addEventListener('click', async () => {
   const response = await fetch(url);
   return response.json();
 });
-
-async function fetchData(url) {
-  try {
-    const response = await fetch(url);
-    if (!response.ok) {
-      throw new Error(`fetch to ${url} failed`);
-    }
-    return response.json();
-  } catch (error) {
-    console.log(`fetchData function failed: ${error.message}`);
-  }
-}
-
-async function postData(url, data) {
-  const response = await fetch(url, {
-    method: 'post',
-    body: data,
-  });
-  return response.json();
-}

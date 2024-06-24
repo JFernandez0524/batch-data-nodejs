@@ -7,6 +7,7 @@ import { upload } from './middleware/multer.js';
 import formatData from './lib/formatObject.js';
 import skipData from './lib/skipDataBatch.js';
 import generateCSVFromJSON from './lib/formatSkipTracedResults.js';
+import { log } from 'node:console';
 
 const app = express();
 
@@ -29,6 +30,8 @@ app.get('/test', (req, res) => {
 
 app.post('/upload', upload.single('csvfile'), (req, res) => {
   const results = [];
+  console.log(req.file);
+
   fs.createReadStream(req.file.path)
     .pipe(csvParser({ columns: true, encoding: 'utf8', trim: true }))
     .on('data', (data) => {
@@ -41,22 +44,25 @@ app.post('/upload', upload.single('csvfile'), (req, res) => {
         const fileUrl = new URL('formattedData.json', baseDirectory); // Correct file URL creation
 
         // Call your data formatting function
-        console.log(`RESULTS from line 34 index file ${results}`);
+        console.log(
+          `RESULTS from line 34 Server index file ${JSON.stringify(results)}`
+        );
         const formattedData = await formatData(results);
-        console.log(formattedData); // Output the parsed data
+        const data = JSON.stringify(formattedData);
+        console.log(`Formatted data: ${data}`); // Output the parsed data
 
         // Write the formatted data to a file
         await writeFile(
           fileUrl, // Using the URL object directly
-          formattedData // Use the stringified data directly
+          data // Use the stringified data directly
         );
 
         // Send a success response with the results of parsing the csv file
         res.json({
           status: 200,
           success: 'File uploaded and processed',
-          results: formattedData,
-          totalRecords: JSON.parse(formattedData).length,
+          results: data,
+          totalRecords: JSON.parse(data).length,
         });
       } catch (error) {
         console.error('Error handling file processing: ' + error);
@@ -81,9 +87,10 @@ app.get('/skip-data', async (req, res) => {
     );
     await writeFile(skippedDataFile, responseString, 'utf8');
 
-    res.status(200).json({
+    res.json({
       message: 'Data successfully uploaded to the API',
       apiResponse: skippedData,
+      totalRecords: skippedData?.results?.meta?.results?.matchCount,
     });
   } catch (error) {
     // Handle errors that were thrown in uploadData
