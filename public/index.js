@@ -2,6 +2,7 @@ const skipTraceBtn = document.querySelector('.skiptrace');
 const generateCsvBtn = document.querySelector('.generate-csv');
 const formSubmit = document.querySelector('form');
 
+//
 async function postData(url, data) {
   if (!data) {
     throw new Error(`No Data: ${data} Provided.`);
@@ -20,6 +21,7 @@ async function postData(url, data) {
   }
 }
 
+//fetch data function
 async function fetchData(url) {
   try {
     const response = await fetch(url);
@@ -32,6 +34,7 @@ async function fetchData(url) {
   }
 }
 
+//handle form Submit
 formSubmit.addEventListener('submit', async (event) => {
   event.preventDefault();
   //elements
@@ -47,6 +50,7 @@ formSubmit.addEventListener('submit', async (event) => {
   console.log(response);
 });
 
+//call the skip-data route to skip trace the records uploaded
 skipTraceBtn.addEventListener('click', async (event) => {
   event.preventDefault();
   const skipTotal = document.querySelector('.skip-total');
@@ -64,6 +68,7 @@ skipTraceBtn.addEventListener('click', async (event) => {
   }
 });
 
+//get the final csv file with the skipped records
 generateCsvBtn.addEventListener('click', async () => {
   const url = '/generate-csv';
   const response = await fetch(url);

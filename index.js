@@ -7,7 +7,6 @@ import { upload } from './middleware/multer.js';
 import formatData from './lib/formatObject.js';
 import skipData from './lib/skipDataBatch.js';
 import generateCSVFromJSON from './lib/formatSkipTracedResults.js';
-import { log } from 'node:console';
 
 const app = express();
 
